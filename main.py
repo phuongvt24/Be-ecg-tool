@@ -9,6 +9,7 @@ import sys
 import numpy as np
 import pandas as pd
 from pretrain.fusion_test import predict_fusion
+from pretrain.fusion_test_2 import predict_fusion_att
 
 pretrain_path = os.path.join(os.path.dirname(__file__), 'pretrain')
 if pretrain_path not in sys.path:
@@ -69,7 +70,9 @@ async def predict_ecg(files: list[UploadFile] = File(...), type: str = Form(...)
         y_trues, y_preds = predict_resnet18(df1, df2)
     elif (type=='fusion'):
          y_trues, y_preds = predict_fusion(df1, df2)
-
+    elif (type=='att-fusion'):
+         y_trues, y_preds = predict_fusion_att(df1, df2)
+         
     if isinstance(y_trues, np.ndarray):
         y_trues = y_trues.astype(int).tolist()
     else:

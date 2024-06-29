@@ -21,6 +21,7 @@ def predict_resnet18(x,y):
     model_instance = './pretrain/ptbxl/checkpoints/resnet1d18_ptbxl_2024-05-02T05_10_46.358852.pt' 
     model = load_model(ResNet1d18, model_instance, device) 
     y_trues, y_preds = classify(model, device, test_data, 1)
+    print(y_preds)
     y_preds = np.round(y_preds) 
     return(y_trues[0], y_preds[0])
 
