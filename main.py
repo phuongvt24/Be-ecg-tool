@@ -23,7 +23,7 @@ app = FastAPI()
 # Add CORS middleware to allow connections to your FastAPI application
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Specify the origin of the frontend
+    allow_origins=["*"],  # Specify the origin of the frontend
     allow_credentials=True,
     allow_methods=["*"],  # Allows all methods
     allow_headers=["*"],  # Allows all headers
@@ -134,3 +134,8 @@ async def list_images_base64():
                 'data': f'data:image/png;base64,{encoded_string}'
             })
     return image_data
+
+if __name__ == "__main__":
+    import uvicorn
+    port = int(os.environ.get("PORT", 8000))  # Sử dụng cổng từ biến môi trường hoặc 8000 nếu không được cung cấp
+    uvicorn.run(app, host="0.0.0.0", port=port)
