@@ -7,7 +7,6 @@ from sklearn.metrics import precision_recall_curve, auc, f1_score
 
 def classify(model, device, dataset, epoch, batch_size=128):
     data_loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size)
-
     y_trues = np.empty((0, len(dataset.CLASSES)))
     y_scores = np.empty((0, len(dataset.CLASSES)))
     incorrect_predictions = []
@@ -36,6 +35,27 @@ def classify(model, device, dataset, epoch, batch_size=128):
 
     return y_trues, y_scores
 
+def classify2(model, device, dataset, epoch, batch_size=128):
+    data_loader = torch.utils.data.DataLoader(dataset, batch_size=batch_size)
+    print(len(dataset))
+    y_scores = np.empty((0, len(dataset.CLASSES)))
+    y_trues = np.empty((0, len(dataset.CLASSES))) if hasattr(dataset, 'Y') else None
+
+    model.eval()
+    with torch.no_grad():
+        for batch_idx, (X) in enumerate(data_loader):
+            X = X.to(device)
+            X = X.permute(0, 2, 1)
+            y_hat = model(X.float())
+
+            y_scores_batch = torch.sigmoid(y_hat).cpu().numpy()
+            y_scores = np.concatenate((y_scores, y_scores_batch), axis=0)
+    if y_trues is not None:
+        return y_trues, y_scores
+    else:
+        return y_scores
+
+
 def get_f1(y_trues, y_preds):
     f1 = []
     for j in range(y_trues.shape[1]):
@@ -49,4 +69,3 @@ def get_auprc(y_trues, y_scores):
         auprc.append(auc(r, p))
 
     return np.array(auprc)
-

@@ -1,6 +1,4 @@
-pretrain/ptbxl/checkpoints
-pretrain/ptbxl/data
-pretrain/ptbxl/default_data
 pretrain/ptbxl/__pycache__
 __pycache__
 venv
+test
