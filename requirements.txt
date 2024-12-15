@@ -126,3 +126,6 @@ wheel==0.38.4
 y-py==0.5.9
 ypy-websocket==0.8.2
 zipp==3.11.0
+fastapi
+uvicorn
+python-multipart
